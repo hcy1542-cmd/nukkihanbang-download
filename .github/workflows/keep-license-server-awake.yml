@@ -1,0 +1,16 @@
+# 누끼한방 정품 등록 서버(무료 Supabase)는 7일 동안 요청이 없으면 잠든다. 하루 한 번 깨운다.
+# 공개 저장소라 GitHub Actions 비용이 들지 않는다. 내용 없는 GET 요청 하나뿐이라 아무 정보도 보내지 않는다.
+name: keep-license-server-awake
+
+on:
+  schedule:
+    - cron: "17 3 * * *"  # 매일 한국 시간 12:17
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 등록 서버 깨우기
+        run: curl -fsS --retry 3 --retry-delay 20 https://dbjvcgolhmgooeaumdgl.supabase.co/functions/v1/activate
